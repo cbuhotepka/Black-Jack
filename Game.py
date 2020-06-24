@@ -9,10 +9,10 @@ from time import sleep
 
 class Game():
     
-    def __init__(self, desk=Desk(), result='tie', playing=True):
-        self.desk = desk
-        self.result = result
-        self.playing = playing
+    def __init__(self):
+        self.desk = Desk()
+        self.result = ''
+        self.playing = True
         
         
     def game_input(self):
@@ -42,15 +42,17 @@ class Game():
                 
     def players_turn(self):
         move = ''
+        self.result = ''
         while move != 'stay' :
             self.desk.visualize_concealed()
-            
             move = self.game_input()
+            
             if move == 'hit':
                 current_card = self.desk.deck.cards[self.desk.deck.index_card]
                 print("\nYour card is : ", current_card)
                 self.desk.player_hand.add_card(current_card)
                 self.desk.deck.index_card += 1
+                
                 sleep(2)
                                     
                 if self.desk.player_hand.score > 21:
@@ -78,6 +80,9 @@ class Game():
                 #else:
                  #   break           
         
+        
+    def check_result(self):
+        if self.result != 'lose':
             if self.desk.dealer_hand.score > 21:
                 self.result = 'win'
             elif self.desk.dealer_hand.score > self.desk.player_hand.score:
@@ -88,6 +93,16 @@ class Game():
                 self.result = 'win'
             else:
                 print("Something in checking went wrong")
+            
+        print()
+        if self.result == 'lose':
+            print("You've lost :(")
+        elif self.result == 'win':
+            print("You've won!")
+            self.desk.account.balance += self.desk.bet*2
+        else:
+            print("It's a tie. Your bet is back")
+            self.desk.account.balance += self.desk.bet
     
     
     def main_game(self):
@@ -110,28 +125,18 @@ class Game():
                 self.desk.deal_card('dealer')
                 
             self.players_turn()
-            
             self.dealers_turn()
             
-            
-            self.desk.visualize()
-            
-            print()
-            if self.result == 'lose':
-                print("You've lost :(")
-            elif self.result == 'win':
-                print("You've won!")
-                self.desk.account.balance += self.desk.bet*2
-            else:
-                print("It's a tie. Your bet is back")
-                self.desk.account.balance += self.desk.bet
-                
+            self.desk.visualize()                        
+            self.check_result()
+                            
             print(f"Your balance is ${self.desk.account.balance}")
             
             sleep(2)    
+            
             if self.desk.account.balance == 0:
                 print("You have no money! :( :(")
                 self.playing = False
             else:            
-                if input("Enter EXIT for exit").lower() == 'exit':
+                if input("Enter EXIT for exit: ").lower() == 'exit':
                     self.playing = False

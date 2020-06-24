@@ -15,12 +15,12 @@ def clear_scrn():
 
 class Desk():
     
-    def __init__(self, dealer_hand=Hand(), player_hand=Hand(), account=PlayerAccount(), deck=Deck(), bet=0):
-        self.dealer_hand = dealer_hand
-        self.player_hand = player_hand
-        self.account = account
-        self.bet = bet
-        self.deck = deck
+    def __init__(self):
+        self.dealer_hand = Hand()
+        self.player_hand = Hand()
+        self.account = PlayerAccount()
+        self.bet = 0
+        self.deck = Deck()
         
     def visualize_concealed(self):
         clear_scrn()

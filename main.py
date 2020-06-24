@@ -1,4 +1,4 @@
-from Game import Game
+
 
 
 # In[8]:
@@ -11,7 +11,8 @@ def greeting(player):
 
 
 # In[10]:
-
+print('\n'*30)
+from Game import Game
 game = Game()
 greeting(game.desk.account)
 
